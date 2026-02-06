@@ -2,6 +2,8 @@
 
 A simple Windows Forms app for adding and subtracting time values with a running total.
 
+![Time Calculator screenshot](.github/screenshot.gif)
+
 ## Usage
 
 Type time values in HHMM format (no colon needed):
