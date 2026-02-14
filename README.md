@@ -20,6 +20,29 @@ Type time values in HHMM format (no colon needed):
 
 Download the latest release from the [Releases](../../releases) page.
 
+Or install from PowerShell — this downloads the exe, places it in your local app folder, and creates a Start Menu shortcut:
+
+```powershell
+$installDir = "$env:LOCALAPPDATA\TimeCalculator"
+New-Item -Path $installDir -ItemType Directory -Force | Out-Null
+$repo = "stillnet/time-calculator"
+$asset = (Invoke-RestMethod "https://api.github.com/repos/$repo/releases/latest").assets |
+    Where-Object { $_.name -like "*.exe" } | Select-Object -First 1
+$ProgressPreference = 'SilentlyContinue'
+Invoke-WebRequest $asset.browser_download_url -OutFile "$installDir\TimeCalculator.exe"
+$shell = New-Object -ComObject WScript.Shell
+$shortcut = $shell.CreateShortcut("$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Time Calculator.lnk")
+$shortcut.TargetPath = "$installDir\TimeCalculator.exe"
+$shortcut.Save()
+```
+
+To uninstall, remove the folder and shortcut:
+
+```powershell
+Remove-Item "$env:LOCALAPPDATA\TimeCalculator" -Recurse -Force
+Remove-Item "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Time Calculator.lnk" -Force
+```
+
 ## Building from Source
 
 Requires [.NET 6 SDK](https://dotnet.microsoft.com/download) or later.

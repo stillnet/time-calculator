@@ -16,6 +16,8 @@ public partial class MainForm : Form
         switch (e.KeyCode)
         {
             case Keys.Enter:
+            case Keys.Add:                        // numpad +
+            case Keys.Oemplus when e.Shift:       // main keyboard Shift+=
                 ProcessInput();
                 e.Handled = true;
                 e.SuppressKeyPress = true;
@@ -114,6 +116,12 @@ public partial class MainForm : Form
         // Scroll to bottom
         historyTextBox.SelectionStart = historyTextBox.Text.Length;
         historyTextBox.ScrollToCaret();
+    }
+
+    protected override void OnActivated(EventArgs e)
+    {
+        base.OnActivated(e);
+        BeginInvoke(() => inputTextBox.Focus());
     }
 
     private void UpdateTotalDisplay()
